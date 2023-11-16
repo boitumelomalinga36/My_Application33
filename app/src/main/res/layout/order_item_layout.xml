@@ -1,36 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/orderNumberTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Order #12345"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+    <data>
+        <variable
+            name="order"
+            type="com.example.myapplication33.Order" />
+    </data>
 
-    <TextView
-        android:id="@+id/totalPriceTextView"
-        android:layout_width="wrap_content"
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Total: $0.00"
-        android:textSize="16sp" />
+        android:layout_margin="8dp"
+        app:cardCornerRadius="8dp">
 
-    <Button
-        android:id="@+id/buttonProcess"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Process Order"
-        android:layout_marginTop="8dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-    <Button
-        android:id="@+id/buttonComplete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Complete Order"
-        android:layout_marginTop="8dp" />
-</LinearLayout>
+            <!-- Order Number -->
+            <TextView
+                android:id="@+id/orderNumberTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{`Order: ` + order.orderNumber}"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Total Price -->
+            <TextView
+                android:id="@+id/totalPriceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{`Total: R$` + order.totalPrice}"
+                android:textSize="16sp"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Process and Complete Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonProcess"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Process"
+                    android:background="#4CAF50"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginEnd="8dp" />
+
+                <Button
+                    android:id="@+id/buttonComplete"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Complete"
+                    android:background="#2196F3"
+                    android:textColor="#FFFFFF" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

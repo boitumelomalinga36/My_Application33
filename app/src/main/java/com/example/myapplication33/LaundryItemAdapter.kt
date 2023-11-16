@@ -5,12 +5,14 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication33.CartItem
+import com.google.firebase.database.DatabaseReference
 import com.example.myapplication33.R
 import com.example.myapplication33.ShoppingCart
 
 class LaundryItemAdapter(
     private val laundryItems: List<CartItem>, // Change to CartItem
-    private val shoppingCart: ShoppingCart
+    private val shoppingCart: ShoppingCart,
+    private val databaseReference: DatabaseReference // Add database reference parameter
 ) : RecyclerView.Adapter<LaundryItemAdapter.LaundryItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LaundryItemViewHolder {
@@ -29,6 +31,8 @@ class LaundryItemAdapter(
             item.quantity++
             notifyItemChanged(position)
             shoppingCart.addItem(item)
+            // Save to the database here if needed
+            databaseReference.child(item.name).setValue(item)
         }
 
         holder.buttonRemove.setOnClickListener {
@@ -36,6 +40,8 @@ class LaundryItemAdapter(
                 item.quantity--
                 notifyItemChanged(position)
                 shoppingCart.removeItem(item)
+                // Save to the database here if needed
+                databaseReference.child(item.name).setValue(item)
             }
         }
     }

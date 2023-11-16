@@ -6,11 +6,11 @@ import android.os.Bundle
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
-class item1 : AppCompatActivity() {
+class washAndIronItems : AppCompatActivity() {
     private lateinit var databaseReference: DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_item1)
+        setContentView(R.layout.activity_wash_and_iron_items)
         databaseReference = FirebaseDatabase.getInstance().reference.child("user_data")
         val laundryItems = mutableListOf(
             LaundryItem("Curtains", 150.0),

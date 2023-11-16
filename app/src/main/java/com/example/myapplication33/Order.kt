@@ -1,20 +1,22 @@
+package com.example.myapplication33
+
 import android.os.Parcel
 import android.os.Parcelable
 import com.example.myapplication33.CartItem
 
 data class Order(
-    val orderNumber: String,
-    val items: List<CartItem>,
-    val totalPrice: Double,
-    val userName: String,
-    val cardNumber: String,
-    val expiryDate: String,
-    val cvv: String,
-    val streetAddress: String,
-    val city: String,
-    val province: String,
-    val postalCode: String,
-    var status: OrderStatus
+    val orderNumber: String = "",
+    val items: List<CartItem> = mutableListOf(),
+    val totalPrice: Double = 0.0,
+    val userName: String = "",
+    val cardNumber: String = "",
+    val expiryDate: String = "",
+    val cvv: String = "",
+    val streetAddress: String = "",
+    val city: String = "",
+    val province: String = "",
+    val postalCode: String = "",
+    var status: OrderStatus = OrderStatus.PROCESSING
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString() ?: "",

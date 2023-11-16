@@ -1,5 +1,3 @@
-// CartActivity.kt
-
 package com.example.myapplication33
 
 import CartAdapter
@@ -18,6 +16,8 @@ class CartActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cart)
+
+
 
         // Retrieve cart items from the intent as a nullable list
         cartItems = intent.getParcelableArrayListExtra<CartItem>("cartItems").orEmpty().toMutableList()

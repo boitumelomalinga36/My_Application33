@@ -6,15 +6,23 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var usersReference: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        auth = FirebaseAuth.getInstance()
+        usersReference = FirebaseDatabase.getInstance().reference.child("users")
+
         val usernameEditText = findViewById<EditText>(R.id.username)
-        val passwordEditText = findViewById<EditText>(R.id.editTextTextPersonName2)
+        val passwordEditText = findViewById<EditText>(R.id.editTextTextPassword)
         val loginButton = findViewById<Button>(R.id.button2)
         val createAccountButton = findViewById<Button>(R.id.button)
 
@@ -22,17 +30,11 @@ class MainActivity : AppCompatActivity() {
             val username = usernameEditText.text.toString()
             val password = passwordEditText.text.toString()
 
-            // Here, you can perform authentication logic, for example, by checking the username and password.
-            // For this example, we'll simply display a toast message indicating a successful login.
-            if (isValidLogin(username, password)) {
-                Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
-                // Add code to navigate to the next screen or perform other actions after successful login.
+            if (username.isNotEmpty() && password.isNotEmpty()) {
+                loginUser(username, password)
             } else {
-                Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please enter both username and password", Toast.LENGTH_SHORT).show()
             }
-
-            val intent = Intent(this, homepage::class.java)
-            startActivity(intent)
         }
 
         createAccountButton.setOnClickListener {
@@ -42,9 +44,54 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun isValidLogin(username: String, password: String): Boolean {
-        // Implement your authentication logic here. For demonstration purposes, we'll assume a valid login.
-        return username == "demo" && password == "password"
+    private fun loginUser(username: String, password: String) {
+        // Fetch user data from the database based on the entered username
+        usersReference.orderByChild("username").equalTo(username).addListenerForSingleValueEvent(
+            object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        for (userSnapshot in dataSnapshot.children) {
+                            val user = userSnapshot.getValue(User::class.java)
+                            if (user != null && user.password == password) {
+                                // Use Firebase Authentication to sign in the user
+                                Toast.makeText(
+                                    this@MainActivity,
+                                    "Login successful",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                val intent = Intent(this@MainActivity, homepage::class.java)
+                                startActivity(intent)
+                                return
+                            }
+                        }
+                        // Password does not match
+                        Toast.makeText(
+                            this@MainActivity,
+                            "Invalid username or password",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        // Username not found in the database
+                        Toast.makeText(
+                            this@MainActivity,
+                            "Username not found",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Handle database error
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Database error",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
     }
+
+
+
 
 }

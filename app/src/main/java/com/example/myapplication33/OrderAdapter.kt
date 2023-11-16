@@ -1,19 +1,21 @@
-package com.example.myapplication33
 
-import Order
+
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication33.Order
+import com.example.myapplication33.databinding.OrderItemLayoutBinding
 
-class OrderAdapter(private val orders: List<Order>, private val processOrder: (Order) -> Unit, private val completeOrder: (Order) -> Unit) : RecyclerView.Adapter<OrderAdapter.ViewHolder>() {
+class OrderAdapter(
+    private val orders: List<Order>,
+    private val processOrder: (Order) -> Unit,
+    private val completeOrder: (Order) -> Unit
+) : RecyclerView.Adapter<OrderAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.order_item_layout, parent, false)
-        return ViewHolder(view)
+        val binding: OrderItemLayoutBinding = OrderItemLayoutBinding.inflate(inflater, parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -21,33 +23,25 @@ class OrderAdapter(private val orders: List<Order>, private val processOrder: (O
         holder.bind(order)
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(order: Order) {
-            // Bind order details to the views
-            // For example:
-            val orderNumberTextView = itemView.findViewById<TextView>(R.id.orderNumberTextView)
-            val totalPriceTextView = itemView.findViewById<TextView>(R.id.totalPriceTextView)
+    override fun getItemCount(): Int {
+        return orders.size
+    }
 
-            orderNumberTextView.text = order.orderNumber
-            totalPriceTextView.text = "Total: R${order.totalPrice}"
+    inner class ViewHolder(private val binding: OrderItemLayoutBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(order: Order) {
+            binding.order = order
+            binding.executePendingBindings()
 
             // Set click listeners for process and complete buttons
-            val processButton = itemView.findViewById<Button>(R.id.buttonProcess)
-            processButton.setOnClickListener {
+            binding.buttonProcess.setOnClickListener {
                 processOrder(order)
             }
 
-            val completeButton = itemView.findViewById<Button>(R.id.buttonComplete)
-            completeButton.setOnClickListener {
+            binding.buttonComplete.setOnClickListener {
                 completeOrder(order)
             }
         }
-
-
-
-    }
-
-    override fun getItemCount(): Int {
-        return orders.size
     }
 }

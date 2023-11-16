@@ -1,53 +1,68 @@
 package com.example.myapplication33
 
-import Order
+import OrderAdapter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.*
 
 
 class ADMINPAGE : AppCompatActivity() {
     private lateinit var orderList: MutableList<Order>
+    private lateinit var adapter: OrderAdapter
+    private lateinit var database: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_adminpage)
 
-        // Initialize orderList and populate it with orders
-        orderList = mutableListOf() // Initialize an empty list
+        orderList = mutableListOf()
+        adapter = OrderAdapter(orderList, this::processOrder, this::completeOrder)
 
-        // Use a RecyclerView to display orders in the format similar to the cart page
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        val adapter = OrderAdapter(orderList, this::processOrder, this::completeOrder)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
+
+        database = FirebaseDatabase.getInstance().reference.child("orders")
+        retrieveOrdersFromFirebase()
     }
 
-    // Implement the logic to retrieve orders from your data source
-    private fun retrieveOrders(): List<Order> {
-        // In a real-world application, you'd retrieve orders from a database or server
-        // For now, you can use your in-memory array or list
-        return orderList
+    private fun retrieveOrdersFromFirebase() {
+        database.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                orderList.clear()
+
+                for (orderSnapshot in dataSnapshot.children) {
+                    val order = orderSnapshot.getValue(Order::class.java)
+                    order?.let {
+                        orderList.add(it)
+                    }
+                }
+                adapter.notifyDataSetChanged()
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w("ADMINPAGE", "loadPost:onCancelled", databaseError.toException())
+            }
+        })
     }
 
-    // Implement the logic for processing an order
     private fun processOrder(order: Order) {
         order.status = OrderStatus.PROCESSING
-        // You can update the order status in your data source (e.g., database or server)
-
-        // Refresh the RecyclerView to reflect the updated order status
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        (recyclerView.adapter as OrderAdapter).notifyDataSetChanged()
+        // Update the order status in the database
+        updateOrderStatusInDatabase(order)
     }
 
-    // Implement the logic for completing an order
     private fun completeOrder(order: Order) {
         order.status = OrderStatus.COMPLETED
-        // You can update the order status in your data source (e.g., database or server)
+        // Update the order status in the database
+        updateOrderStatusInDatabase(order)
+    }
 
-        // Refresh the RecyclerView to reflect the updated order status
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        (recyclerView.adapter as OrderAdapter).notifyDataSetChanged()
+    private fun updateOrderStatusInDatabase(order: Order) {
+        val orderRef = database.child(order.orderNumber)
+        orderRef.setValue(order)
     }
 }

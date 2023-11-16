@@ -18,6 +18,9 @@ class homepage : AppCompatActivity() {
         val logOutButton = findViewById<ImageButton>(R.id.imageButton3)
         val cart = findViewById<ImageButton>(R.id.imageButton)
         val user = findViewById<ImageButton>(R.id.imageButton2)
+        val FoldButton = findViewById<ImageButton>(R.id.imageButton4)
+        val IronButton = findViewById<ImageButton>(R.id.imageButton5)
+        val WashButton = findViewById<ImageButton>(R.id.imageButton6)
 
 
 
@@ -51,6 +54,24 @@ class homepage : AppCompatActivity() {
 
         user.setOnClickListener {
             val intent = Intent(this, ADMINPAGE::class.java)
+            startActivity(intent)
+        }
+
+
+        FoldButton.setOnClickListener {
+            val intent = Intent(this, WashAndFold::class.java)
+            startActivity(intent)
+        }
+
+
+        IronButton.setOnClickListener {
+            val intent = Intent(this, Iron::class.java)
+            startActivity(intent)
+        }
+
+
+        WashButton.setOnClickListener {
+            val intent = Intent(this, WashAndIron::class.java)
             startActivity(intent)
         }
 

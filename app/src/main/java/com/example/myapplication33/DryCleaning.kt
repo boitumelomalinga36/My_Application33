@@ -7,16 +7,21 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+
 
 
 class DryCleaning : AppCompatActivity() {
     private val laundryItems = mutableListOf<LaundryItem>()
     private lateinit var recyclerView: RecyclerView
     private lateinit var shoppingCart: ShoppingCart
+    private lateinit var databaseReference: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dry_cleaning)
+        databaseReference = FirebaseDatabase.getInstance().reference.child("dryClean")
 
         laundryItems.add(LaundryItem("Curtains", 150.0))
         laundryItems.add(LaundryItem("Dress", 320.0))
@@ -45,7 +50,7 @@ class DryCleaning : AppCompatActivity() {
         }.toMutableList()
 
         // Set up the LaundryItemAdapter
-        val adapter = LaundryItemAdapter(cartItems, shoppingCart)
+        val adapter = LaundryItemAdapter(cartItems, shoppingCart, databaseReference)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -62,9 +67,6 @@ class DryCleaning : AppCompatActivity() {
             // Start the cart activity
             startActivity(intent)
         }
-
-
     }
 }
-
 

@@ -1,92 +1,106 @@
 package com.example.myapplication33
 
-import Order
-import android.content.Intent
-import android.os.Handler
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import androidx.appcompat.app.AlertDialog
+
+    import android.content.Intent
+    import android.os.Handler
+    import androidx.appcompat.app.AppCompatActivity
+    import android.os.Bundle
+    import android.widget.Button
+    import android.widget.EditText
+    import android.widget.ImageButton
+    import androidx.appcompat.app.AlertDialog
+    import com.google.firebase.database.DatabaseReference
+    import com.google.firebase.database.FirebaseDatabase
 
 class Checkout : AppCompatActivity() {
-    private lateinit var cardNumberEditText: EditText
-    private lateinit var expiryDateEditText: EditText
-    private lateinit var cvvEditText: EditText
-    private lateinit var streetAddressEditText: EditText
-    private lateinit var cityEditText: EditText
-    private lateinit var provinceEditText: EditText
-    private lateinit var postalCodeEditText: EditText
-    private lateinit var checkoutButton: Button
+        private lateinit var databaseReference: DatabaseReference
+        private lateinit var cardNumberEditText: EditText
+        private lateinit var expiryDateEditText: EditText
+        private lateinit var cvvEditText: EditText
+        private lateinit var streetAddressEditText: EditText
+        private lateinit var cityEditText: EditText
+        private lateinit var provinceEditText: EditText
+        private lateinit var postalCodeEditText: EditText
+        private lateinit var checkoutButton: Button
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_checkout)
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_checkout)
+            databaseReference = FirebaseDatabase.getInstance().reference.child("orders")
+            // Initialize UI elements
+            cardNumberEditText = findViewById(R.id.editTextTextPersonName3)
+            expiryDateEditText = findViewById(R.id.editTextTextPersonName4)
+            cvvEditText = findViewById(R.id.editTextTextPersonName5)
+            streetAddressEditText = findViewById(R.id.editTextTextPersonName6)
+            cityEditText = findViewById(R.id.editTextTextPersonName7)
+            provinceEditText = findViewById(R.id.editTextTextPersonName8)
+            postalCodeEditText = findViewById(R.id.editTextTextPersonName9)
+            checkoutButton = findViewById(R.id.button8)
 
-        // Initialize UI elements
-        cardNumberEditText = findViewById(R.id.editTextTextPersonName3)
-        expiryDateEditText = findViewById(R.id.editTextTextPersonName4)
-        cvvEditText = findViewById(R.id.editTextTextPersonName5)
-        streetAddressEditText = findViewById(R.id.editTextTextPersonName6)
-        cityEditText = findViewById(R.id.editTextTextPersonName7)
-        provinceEditText = findViewById(R.id.editTextTextPersonName8)
-        postalCodeEditText = findViewById(R.id.editTextTextPersonName9)
-        checkoutButton = findViewById(R.id.button8)
+            // Set up the checkout button click listener
+            checkoutButton.setOnClickListener {
+                handleCheckout()
+                val intent = Intent(this, order_confirmation::class.java)
+                startActivity(intent)
+            }
+        }
 
-        // Set up the checkout button click listener
-        checkoutButton.setOnClickListener {
-            val intent = Intent(this, order_confirmation::class.java)
+        private fun handleCheckout() {
+            // Retrieve user input
+            val cardNumber = cardNumberEditText.text.toString()
+            val expiryDate = expiryDateEditText.text.toString()
+            val cvv = cvvEditText.text.toString()
+            val streetAddress = streetAddressEditText.text.toString()
+            val city = cityEditText.text.toString()
+            val province = provinceEditText.text.toString()
+            val postalCode = postalCodeEditText.text.toString()
+
+            // Perform validation and checkout logic
+            if (isValidInput(cardNumber, expiryDate, cvv, streetAddress, city, province, postalCode)) {
+                // Simulate a payment processing delay (you should replace this with actual payment processing)
+                Handler().postDelayed({
+                    // Payment successful
+                    val orderDetails = "Order Details:\n\n" +
+                            "Card Number: $cardNumber\n" +
+                            "Expiry Date: $expiryDate\n" +
+                            "CVV: $cvv\n" +
+                            "Street Address: $streetAddress\n" +
+                            "City: $city\n" +
+                            "Province: $province\n" +
+                            "Postal Code: $postalCode\n\n" +
+                            "Total Price: ${calculateTotalPrice()}" // Calculate the total price here
+
+                    // Create an order confirmation dialog or start a new activity to display the order details
+                    val builder = AlertDialog.Builder(this)
+                    builder.setTitle("Order Confirmation")
+                    builder.setMessage(orderDetails)
+                    builder.setPositiveButton("OK") { dialog, _ ->
+                        // Clear the shopping cart or perform any other necessary actions
+                        clearCart() // Clear the cart here
+                        dialog.dismiss()
+                        finish() // Finish the checkout activity
+                    }
+                    builder.show()
+                }, 2000) // Simulated payment processing delay of 2 seconds (replace with actual payment processing time)
+            } else {
+                // Handle validation errors (e.g., display error messages to the user)
+                // You can add error messages here or display them to the user.
+            }
+            // Inside handleCheckout function, after displaying the order confirmation dialog
+// ...
+
+// Write the order to the database
+            val order = createOrder()
+            val orderKey = databaseReference.push().key
+            if (orderKey != null) {
+                databaseReference.child(orderKey).setValue(order)
+            }
+
+            val intent = Intent(this, ADMINPAGE::class.java)
+            intent.putExtra("order", order)
             startActivity(intent)
+
         }
-    }
-
-    private fun handleCheckout() {
-        // Retrieve user input
-        val cardNumber = cardNumberEditText.text.toString()
-        val expiryDate = expiryDateEditText.text.toString()
-        val cvv = cvvEditText.text.toString()
-        val streetAddress = streetAddressEditText.text.toString()
-        val city = cityEditText.text.toString()
-        val province = provinceEditText.text.toString()
-        val postalCode = postalCodeEditText.text.toString()
-
-        // Perform validation and checkout logic
-        if (isValidInput(cardNumber, expiryDate, cvv, streetAddress, city, province, postalCode)) {
-            // Simulate a payment processing delay (you should replace this with actual payment processing)
-            Handler().postDelayed({
-                // Payment successful
-                val orderDetails = "Order Details:\n\n" +
-                        "Card Number: $cardNumber\n" +
-                        "Expiry Date: $expiryDate\n" +
-                        "CVV: $cvv\n" +
-                        "Street Address: $streetAddress\n" +
-                        "City: $city\n" +
-                        "Province: $province\n" +
-                        "Postal Code: $postalCode\n\n" +
-                        "Total Price: ${calculateTotalPrice()}" // Calculate the total price here
-
-                // Create an order confirmation dialog or start a new activity to display the order details
-                val builder = AlertDialog.Builder(this)
-                builder.setTitle("Order Confirmation")
-                builder.setMessage(orderDetails)
-                builder.setPositiveButton("OK") { dialog, _ ->
-                    // Clear the shopping cart or perform any other necessary actions
-                    clearCart() // Clear the cart here
-                    dialog.dismiss()
-                    finish() // Finish the checkout activity
-                }
-                builder.show()
-            }, 2000) // Simulated payment processing delay of 2 seconds (replace with actual payment processing time)
-        } else {
-            // Handle validation errors (e.g., display error messages to the user)
-            // You can add error messages here or display them to the user.
-        }
-        val order = createOrder()
-        val intent = Intent(this, ADMINPAGE::class.java)
-        intent.putExtra("order", order)
-        startActivity(intent)
-    }
 
     private fun createOrder(): Order {
         // Retrieve user input and other necessary data
