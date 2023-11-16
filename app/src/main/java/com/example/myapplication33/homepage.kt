@@ -35,7 +35,7 @@ class homepage : AppCompatActivity() {
         }
 
         blanketButton.setOnClickListener {
-            val intent = Intent(this, Checkout::class.java)
+            val intent = Intent(this, UserOrdersActivity::class.java)
             startActivity(intent)
         }
 
