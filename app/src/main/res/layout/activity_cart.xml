@@ -1,47 +1,92 @@
-<RelativeLayout
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CartActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cartRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-    android:layout_alignParentTop="true"
-    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+        android:layout_width="400dp"
+        android:layout_height="352dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="240dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="413dp"
+        android:layout_height="233dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/blue" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="414dp"
+        android:layout_height="174dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/pit" />
+
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="184dp"
+        android:layout_marginEnd="180dp"
+        android:text="WASHING BASKET"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/totalPriceTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/totalItemsTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:text="Total: $0.00"
         android:textSize="18sp"
-        android:layout_above="@+id/totalItemsTextView"
-        android:layout_centerHorizontal="true" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/totalItemsTextView" />
 
     <TextView
         android:id="@+id/totalItemsTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonCheckout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:text="Total Items: 0"
         android:textSize="18sp"
-        android:layout_above="@+id/buttonCheckout"
-        android:layout_centerHorizontal="true" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cartRecyclerView" />
 
     <Button
         android:id="@+id/buttonCheckout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Checkout"
-        android:background="@drawable/buttons"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="16dp"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/buttons"
+        android:text="Checkout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/totalPriceTextView" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+

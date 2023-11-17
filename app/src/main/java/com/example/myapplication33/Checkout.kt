@@ -40,7 +40,7 @@ class Checkout : AppCompatActivity() {
             // Set up the checkout button click listener
             checkoutButton.setOnClickListener {
                 handleCheckout()
-                val intent = Intent(this, order_confirmation::class.java)
+                val intent = Intent(this, datePicker::class.java)
                 startActivity(intent)
             }
         }

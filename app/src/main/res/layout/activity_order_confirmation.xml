@@ -29,6 +29,17 @@
         android:textSize="16sp"
         android:layout_marginStart="16dp"/>
 
+    <TextView
+        android:id="@+id/totalItemsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total Items: "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/totalPriceTextView"
+        android:textSize="16sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"/>
+
     <!-- Add more TextViews and Views for other order details like items, shipping info, etc. -->
 
     <Button
@@ -37,7 +48,7 @@
         android:layout_height="wrap_content"
         android:text="Continue Shopping"
         android:background="@drawable/buttons"
-        app:layout_constraintTop_toBottomOf="@+id/totalPriceTextView"
+        app:layout_constraintTop_toBottomOf="@+id/totalItemsTextView"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="24dp"
         android:layout_marginStart="16dp"/>

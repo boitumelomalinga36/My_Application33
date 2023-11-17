@@ -1,6 +1,5 @@
-<!-- res/layout/activity_user_orders.xml -->
-
-<RelativeLayout
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,33 +7,58 @@
     android:layout_height="match_parent"
     tools:context=".UserOrdersActivity">
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ordersRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/bottomView"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_width="383dp"
+        android:layout_height="418dp"
+        android:layout_marginTop="240dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="413dp"
+        android:layout_height="233dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/blue" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="414dp"
+        android:layout_height="174dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/bottomView" />
+        app:srcCompat="@drawable/pit" />
 
-    <View
-        android:id="@+id/bottomView"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?android:attr/listDivider"
-        android:layout_above="@+id/buttonBack" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="188dp"
+        android:layout_marginEnd="220dp"
+        android:text="VIEW ORDERS"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/buttonBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Back"
+        android:layout_width="191dp"
+        android:layout_height="64dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginStart="108dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/buttons"
+        android:text="Back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ordersRecyclerView" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

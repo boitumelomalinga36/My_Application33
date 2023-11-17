@@ -17,8 +17,6 @@ class CartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cart)
 
-
-
         // Retrieve cart items from the intent as a nullable list
         cartItems = intent.getParcelableArrayListExtra<CartItem>("cartItems").orEmpty().toMutableList()
 
@@ -31,11 +29,26 @@ class CartActivity : AppCompatActivity() {
         // Calculate and display the total price and total items
         updateTotalViews()
 
+        // In CartActivity
         buttonCheckout.setOnClickListener {
-            // Implement the logic to navigate to the checkout page or perform checkout here
-            // For example, you can start a new activity or display a dialog for checkout options.
-            // Replace `CheckoutActivity::class.java` with the name of your checkout activity.
-            val intent = Intent(this, Checkout::class.java)
+            // Calculate the total price and total items
+            val (totalPrice, totalItems) = calculateTotalPriceAndItems(cartItems)
+
+            // Create the Order object
+            val order = Order(
+                orderNumber = generateUniqueOrderNumber(), // Implement this function
+                items = cartItems,
+                totalPrice = totalPrice,
+                userName = "User", // Set the user name as needed
+                // Set other properties as needed
+            )
+
+            // Pass the Order object, total price, and total items to OrderConfirmation activity
+            val intent = Intent(this, order_confirmation::class.java).apply {
+                putExtra("order", order)
+                putExtra("totalPrice", totalPrice)
+                putExtra("totalItems", totalItems)
+            }
             startActivity(intent)
         }
     }
@@ -60,5 +73,12 @@ class CartActivity : AppCompatActivity() {
         }
 
         return Pair(totalPrice, totalItems)
+    }
+
+    private fun generateUniqueOrderNumber(): String {
+        // Implement the logic to generate a unique order number, for example, using timestamp and a random number
+        val timestamp = System.currentTimeMillis()
+        val random = (1000..9999).random()
+        return "ORDER-$timestamp-$random"
     }
 }

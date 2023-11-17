@@ -9,7 +9,8 @@ import com.example.myapplication33.databinding.OrderItemLayoutBinding
 class OrderAdapter(
     private val orders: List<Order>,
     private val processOrder: (Order) -> Unit,
-    private val completeOrder: (Order) -> Unit
+    private val completeOrder: (Order) -> Unit,
+    private val removeOrder: (Order) -> Unit
 ) : RecyclerView.Adapter<OrderAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -34,7 +35,7 @@ class OrderAdapter(
             binding.order = order
             binding.executePendingBindings()
 
-            // Set click listeners for process and complete buttons
+            // Set click listeners for process, complete, and remove buttons
             binding.buttonProcess.setOnClickListener {
                 processOrder(order)
             }
@@ -42,6 +43,11 @@ class OrderAdapter(
             binding.buttonComplete.setOnClickListener {
                 completeOrder(order)
             }
+
+            binding.buttonRemove.setOnClickListener {
+                removeOrder(order)
+            }
         }
     }
+
 }
