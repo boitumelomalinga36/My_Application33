@@ -1,9 +1,11 @@
 package com.example.myapplication33
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -25,6 +27,16 @@ class MainActivity : AppCompatActivity() {
         val passwordEditText = findViewById<EditText>(R.id.editTextTextPassword)
         val loginButton = findViewById<Button>(R.id.button2)
         val createAccountButton = findViewById<Button>(R.id.button)
+        val textView = findViewById<TextView>(R.id.textView)
+
+        textView.setOnClickListener {
+            val url = "https://www.pressedintime.co.za/"
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(url)
+            startActivity(intent)
+        }
+
+
 
         loginButton.setOnClickListener {
             val username = usernameEditText.text.toString()

@@ -157,7 +157,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
         android:layout_marginTop="8dp"
-        android:text="USER"
+        android:text="ADMIN"
         app:layout_constraintStart_toEndOf="@+id/textView13"
         app:layout_constraintTop_toBottomOf="@+id/imageButton2" />
 
